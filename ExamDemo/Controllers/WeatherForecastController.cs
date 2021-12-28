@@ -23,6 +23,10 @@ namespace ExamDemo.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// test
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
