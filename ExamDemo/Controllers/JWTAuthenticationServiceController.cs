@@ -17,8 +17,23 @@ namespace ExamDemo.Controllers
         public JWTAuthenticationServiceController()
         {
 
+        }
 
+        [HttpPost]
+        [Route("Token")]
+        public IActionResult Login([FromBody] Users users)
+        {
+            var user = _account.LoginStudent(login);
 
+            if (user != null)
+            {
+                var tokenString = GenerateToken(user);
+                return Ok(new { token = tokenString });
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
 
@@ -37,7 +52,7 @@ namespace ExamDemo.Controllers
                 audience: "http://localhost:60064/",
                 claims: authClaims,
                 notBefore: new DateTimeOffset(DateTime.Now).DateTime,
-                expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
+                expires: new DateTimeOffset(DateTime.Now.AddHours(1)).DateTime,
                 //Using HS256 Algorithm to encrypt Token  
                 signingCredentials: new SigningCredentials
                 (new SymmetricSecurityKey(Encoding.ASCII.GetBytes("Do not share this key")), SecurityAlgorithms.HmacSha256Signature)

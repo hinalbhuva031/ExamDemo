@@ -44,9 +44,9 @@ namespace ExamDemo
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("Do not share this key")),
                     ValidateIssuer = true,
-                    ValidIssuer = "http://localhost:60064/",
+                    ValidIssuer = "http://localhost:2528/",
                     ValidateAudience = true,
-                    ValidAudience = "http://localhost:60064",
+                    ValidAudience = "http://localhost:2528",
                     RequireExpirationTime = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
