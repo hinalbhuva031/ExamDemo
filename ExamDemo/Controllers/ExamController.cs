@@ -7,6 +7,13 @@ namespace ExamDemo.Controllers
     [ApiController]
     public class ExamController : ControllerBase
     {
+        [HttpPost]
+        [Route("AddExams")]
+        public ActionResult AddExams()
+        {
+            return new JsonResult();
+        }
+
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using ExamDemo.Contracts;
 using ExamDemo.Model;
+using ExamDemo.StoreProcedures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ExamDemo.Services
         private IExamService _examservice;
         public Exams AddExams(Exams exams)
         {
-           return  _examservice.ExecuteStoredProcedure(StoredProcedures.INSERT_EXAM_RECORD, exams);
+           return  _examservice.ExecuteStoredProcedure(StoredProcedures.INSERT_EXAM_RECORD);
         }
     }
 }
