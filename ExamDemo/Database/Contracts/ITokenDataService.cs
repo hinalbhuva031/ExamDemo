@@ -1,9 +1,10 @@
-﻿using ExamDemo.Model;
+﻿using ExamDemo.Database.Models;
+using ExamDemo.Model;
 
 namespace ExamDemo.Database.Contracts
 {
     public interface ITokenDataService
     {
-        Users CreateToken(Users users);
+        void CreateToken(GetUserParam users);
     }
 }

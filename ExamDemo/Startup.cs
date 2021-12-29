@@ -28,6 +28,8 @@ namespace ExamDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           // services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("ExamDBConnection")));
+
             services.AddControllers();
 
             services.AddAuthentication(a =>
