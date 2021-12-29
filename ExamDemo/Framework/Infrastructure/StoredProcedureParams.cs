@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ExamDemo.Infrastructure
 {
@@ -18,7 +16,7 @@ namespace ExamDemo.Infrastructure
                 var parameterName = p.Name;
                 SqlParameter parameter;
 
-                // If property type is user defined data type then add sql parameters
+                //If property type is user defined data type then add sql parameters
                 //if (value is UserDefinedTableTypeParameter userDefinedTypeParameter)
                 //{
                 //    parameter = new SqlParameter(parameterName, userDefinedTypeParameter.Data)
@@ -27,9 +25,10 @@ namespace ExamDemo.Infrastructure
                 //        TypeName = userDefinedTypeParameter.TableType
                 //    };
                 //}
-                // For all other types
-              
-                
+                //For all other types
+
+
+
                 parameter = new SqlParameter(parameterName, value);
                
                 sqlParameters.Add(parameter);

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Threading;
+using ExamDemo.Framework.Infrastructure;
+using ExamDemo.Framework.Services;
 
 namespace ExamDemo.Repository
 {
@@ -13,7 +15,7 @@ namespace ExamDemo.Repository
     {
         #region Private Fields
         private readonly Guid _instanceId;
-      
+
         #endregion Private Fields
         //public DataContext(string nameOrConnectionString) : base(nameOrConnectionString)
         //{
