@@ -7,6 +7,7 @@ using System;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Collections.Generic;
+using ExamDemo.Contracts;
 
 namespace ExamDemo.Controllers
 {
@@ -14,20 +15,23 @@ namespace ExamDemo.Controllers
     [ApiController]
     public class JWTAuthenticationServiceController : ControllerBase
     {
-        public JWTAuthenticationServiceController()
-        {
 
+        private readonly IToken _token;
+
+        public JWTAuthenticationServiceController(IToken token)
+        {
+            _token = token;
         }
 
         [HttpPost]
         [Route("Token")]
-        public IActionResult Login([FromBody] Users users)
+        public IActionResult Token([FromBody] Users users)
         {
-            var user = _account.LoginStudent(login);
+            var GetToken = _token.CreateToken(users);
 
-            if (user != null)
+            if (GetToken != null)
             {
-                var tokenString = GenerateToken(user);
+                var tokenString = GenerateToken(GetToken);
                 return Ok(new { token = tokenString });
             }
             else

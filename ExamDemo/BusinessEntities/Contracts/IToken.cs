@@ -4,5 +4,6 @@ namespace ExamDemo.Contracts
 {
     public interface IToken
     {
+        Users CreateToken(Users users);
     }
 }

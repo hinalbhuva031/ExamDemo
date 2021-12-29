@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using ExamDemo.Framework.Repositories;
+using ExamDemo.Framework.Infrastructure;
 
 namespace ExamDemo.Repository
 {
@@ -21,6 +23,11 @@ namespace ExamDemo.Repository
 
             var data = (_context as DataContext).Database.SqlQuery<TEntity>($"EXEC {sp} {string.Join(",", paramNames)}", sqlParams).ToList();
             return data;
+        }
+
+        public List<TEntity> ExecuteStoredProcedure(string sp)
+        {
+            return (_context as DataContext).Database.SqlQuery<TEntity>("EXEC " + sp).ToList();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Threading;
+using ExamDemo.Framework.Infrastructure;
 
 namespace ExamDemo.Repository
 {
