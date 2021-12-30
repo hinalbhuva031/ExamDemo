@@ -6,13 +6,19 @@ using System.IO;
 
 namespace ExamDemo.Framework.Services
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : DataContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        { }
+        static AppDbContext()
+        {
+            System.Data.Entity.Database.SetInitializer<AppDbContext>(null);
+        }
+
+        public AppDbContext(string connString)
+            : base(connString)
+        {
+        }
         public DbSet<Exams> Exams { get; set; }
-       
+
     }
 
 
