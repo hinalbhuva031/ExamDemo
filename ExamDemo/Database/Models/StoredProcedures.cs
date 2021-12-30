@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExamDemo.StoreProcedures
+namespace ExamDemo.Database.Models
 {
     public class StoredProcedures
     {

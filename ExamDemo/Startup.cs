@@ -1,26 +1,31 @@
+using ExamDemo.BusinessEntities.Contracts;
+using ExamDemo.BusinessSevices.Services;
+using ExamDemo.Database.Contracts;
+using ExamDemo.Database.Models;
+using ExamDemo.Database.Services;
+using ExamDemo.Framework.Repositories;
+using ExamDemo.Framework.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ExamDemo
 {
     public class Startup
     {
+
+        private readonly IConfiguration _configuration;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -28,9 +33,15 @@ namespace ExamDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           // services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("ExamDBConnection")));
+            services.AddDbContext<Framework.Services.AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("ExamDBConnection")));
+            services.AddScoped<IRepositoryAsync<ExamResult>, Repository<ExamResult>>();
+            services.AddScoped<IRepositoryAsync<GetUserResult>, Repository<GetUserResult>>();
+            services.AddScoped<IExamDataService, ExamDataService>();
+            services.AddScoped<IExamService, ExamService>();
+            services.AddScoped<ITokenDataService, TokenDataService>();
+            
 
-            services.AddControllers();
+            services.AddMemoryCache();
 
             services.AddAuthentication(a =>
             {
@@ -46,14 +57,15 @@ namespace ExamDemo
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("Do not share this key")),
                     ValidateIssuer = true,
-                    ValidIssuer = "http://localhost:2528/",
+                    ValidIssuer = "https://localhost:44302/",
                     ValidateAudience = true,
-                    ValidAudience = "http://localhost:2528",
+                    ValidAudience = "https://localhost:44302/",
                     RequireExpirationTime = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddControllers(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

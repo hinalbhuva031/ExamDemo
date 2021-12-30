@@ -1,5 +1,4 @@
 ﻿using ExamDemo.Database.Models;
-using ExamDemo.Model;
 
 namespace ExamDemo.Database.Contracts
 {

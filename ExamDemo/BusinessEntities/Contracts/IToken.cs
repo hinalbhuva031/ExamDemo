@@ -1,6 +1,8 @@
-﻿using ExamDemo.Model;
+﻿using ExamDemo.BusinessEntities.Models;
 
-namespace ExamDemo.Contracts
+
+namespace ExamDemo.BusinessEntities.Contracts
+
 {
     public interface IToken
     {

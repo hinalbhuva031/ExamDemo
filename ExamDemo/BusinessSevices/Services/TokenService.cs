@@ -1,6 +1,6 @@
-﻿using ExamDemo.Contracts;
+﻿using ExamDemo.BusinessEntities.Contracts;
+using ExamDemo.BusinessEntities.Models;
 using ExamDemo.Database.Contracts;
-using ExamDemo.Model;
 using System;
 
 namespace ExamDemo.BusinessSevices.Services
@@ -17,12 +17,12 @@ namespace ExamDemo.BusinessSevices.Services
         {
             try
             {
-                var TokenData = _tokenDataService.CreateToken(users);
-                if (TokenData == null)
-                {
-                    return null;
-                }
-                return TokenData;
+                //var TokenData = _tokenDataService.CreateToken(users);
+                //if (TokenData == null)
+                //{
+                //    return null;
+                //}
+                return users;
             }
             catch(Exception ex)
             {

@@ -1,11 +1,7 @@
 ﻿using ExamDemo.Framework.Infrastructure;
-using ExamDemo.Infrastructure;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ExamDemo.Repository
+namespace ExamDemo.Framework.Repositories
 {
     public interface IRepository<TEntity> where TEntity : IObjectState
     {

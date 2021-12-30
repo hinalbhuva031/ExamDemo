@@ -1,8 +1,4 @@
-﻿using ExamDemo.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ExamDemo.Framework.Infrastructure;
 
 namespace ExamDemo.Database.Models
 {

@@ -1,6 +1,4 @@
 ﻿using ExamDemo.Framework.Infrastructure;
-using ExamDemo.Infrastructure;
-using ExamDemo.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

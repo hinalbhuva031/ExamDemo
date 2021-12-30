@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Swashbuckle.Swagger;
 
-namespace ExamDemo.Contracts
+namespace ExamDemo.BusinessEntities.Contracts
 
 {
     public interface IExamRegistrationService

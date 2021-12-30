@@ -1,19 +1,24 @@
-﻿using ExamDemo.Contracts;
-using ExamDemo.Model;
-using ExamDemo.StoreProcedures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ExamDemo.BusinessEntities.Contracts;
+using ExamDemo.BusinessEntities.Models;
+using ExamDemo.Database.Contracts;
+using ExamDemo.Database.Models;
 
-namespace ExamDemo.Services
+namespace ExamDemo.BusinessSevices.Services
 {
     public class ExamService : IExamService
     {
-        private IExamService _examservice;
-        public Exams AddExams(Exams exams)
+       
+        private readonly IExamDataService _insertExamDataService;
+        public ExamService(IExamDataService insertExamDataService)
         {
-           return  _examservice.ExecuteStoredProcedure(StoredProcedures.INSERT_EXAM_RECORD);
+            _insertExamDataService = insertExamDataService;
         }
+        public Response AddExam(Exams exams)
+        {
+             _insertExamDataService.InsertExams(exams);
+            return new Response { Status = "Success", Content = "Success" };
+
+        }
+      
     }
 }

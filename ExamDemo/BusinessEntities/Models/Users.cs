@@ -1,4 +1,4 @@
-﻿namespace ExamDemo.Model
+﻿namespace ExamDemo.BusinessEntities.Models
 {
     public class Users
     {

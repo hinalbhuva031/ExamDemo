@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ExamDemo.BusinessEntities.Contracts;
+using ExamDemo.BusinessEntities.Models;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ExamDemo.Controllers
 {
@@ -7,14 +9,17 @@ namespace ExamDemo.Controllers
     [ApiController]
     public class ExamController : ControllerBase
     {
-        [HttpPost]
-        [Route("AddExams")]
-        public ActionResult AddExams()
+        private readonly IExamService _examService;
+        public ExamController(IExamService examservice)
         {
-            return new JsonResult();
+            _examService = examservice;
         }
-
+        [HttpPost]
+        [Route("InsertExams")]
+        public ActionResult InsertExams(Exams exams)
+        {
+            var result = _examService.AddExam(exams);
+            return new JsonResult(result);
+        }
     }
-
-
 }
