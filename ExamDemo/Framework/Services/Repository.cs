@@ -4,15 +4,27 @@ using System.Threading.Tasks;
 using ExamDemo.Framework.Repositories;
 using ExamDemo.Framework.Infrastructure;
 using ExamDemo.Framework.DataContext;
+using System.Data.Entity;
 
 namespace ExamDemo.Framework.Services
 {
     public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : BaseEntity
     {
         private readonly IDataContextAsync _context;
+        private readonly DbSet<TEntity> _dbSet;
         public Repository(IDataContextAsync context)
         {
             _context = context;
+
+            var dbContext = context as DbContext;
+
+            if (dbContext != null)
+            {
+                _dbSet = dbContext.Set<TEntity>();
+            }
+            else {
+                _dbSet = null;
+            }
         }
         public Task<List<TEntity>> ExecuteStoredProcedureAsync(string sp, StoredProcedureParams spParams)
         {
@@ -25,11 +37,11 @@ namespace ExamDemo.Framework.Services
             return (_context as DataContext).Database.SqlQuery<TEntity>($"EXEC {sp} {string.Join(",", paramNames)}", sqlParams).ToListAsync();
 
         }
-
         public Task<List<TEntity>> ExecuteStoredProcedureAsync(string sp)
         {
             return (_context as DataContext).Database.SqlQuery<TEntity>("EXEC " + sp).ToListAsync();
         }
+
         public List<TEntity> ExecuteStoredProcedure(string sp, StoredProcedureParams spParams)
         {
             var sqlParams = spParams.AsSqlParameters();
@@ -41,7 +53,6 @@ namespace ExamDemo.Framework.Services
             var data = (_context as DataContext).Database.SqlQuery<TEntity>($"EXEC {sp} {string.Join(",", paramNames)}", sqlParams).ToList();
             return data;
         }
-
         public List<TEntity> ExecuteStoredProcedure(string sp)
         {
             return (_context as DataContext).Database.SqlQuery<TEntity>("EXEC " + sp).ToList();

@@ -3,6 +3,7 @@ using ExamDemo.BusinessSevices.Services;
 using ExamDemo.Database.Contracts;
 using ExamDemo.Database.Models;
 using ExamDemo.Database.Services;
+using ExamDemo.Framework.DataContext;
 using ExamDemo.Framework.Repositories;
 using ExamDemo.Framework.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,7 +34,8 @@ namespace ExamDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Framework.Services.AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("ExamDBConnection")));
+            //services.AddDbContext<AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("ExamDBConnection")));
+            services.AddScoped<IDataContextAsync>(_ => new AppDbContext(_configuration.GetConnectionString("ExamDBConnection")));
             services.AddScoped<IRepositoryAsync<ExamResult>, Repository<ExamResult>>();
             services.AddScoped<IRepositoryAsync<GetUserResult>, Repository<GetUserResult>>();
             services.AddScoped<IExamDataService, ExamDataService>();
@@ -85,6 +87,13 @@ namespace ExamDemo
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            app.UseMvc(routes =>
+            {
+              
+                routes.MapRoute(
+                    name: "defaultApi",
+                    template: "{controller}/{action=}/{id?}");
             });
         }
     }
