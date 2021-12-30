@@ -1,14 +1,11 @@
-﻿using ExamDemo.DataContext;
-using ExamDemo.Infrastructure;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Data.Entity;
 using ExamDemo.Framework.Repositories;
 using ExamDemo.Framework.Infrastructure;
+using ExamDemo.Framework.DataContext;
 
-namespace ExamDemo.Repository
+namespace ExamDemo.Framework.Services
 {
     public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : BaseEntity
     {

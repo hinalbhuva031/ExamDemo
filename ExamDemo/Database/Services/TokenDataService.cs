@@ -1,8 +1,6 @@
 ﻿using ExamDemo.Database.Contracts;
 using ExamDemo.Database.Models;
 using ExamDemo.Framework.Repositories;
-using ExamDemo.Model;
-using ExamDemo.StoreProcedures;
 
 namespace ExamDemo.Database.Services
 {

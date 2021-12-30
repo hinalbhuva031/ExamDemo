@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace ExamDemo.DataContext
+namespace ExamDemo.Framework.DataContext
+
 {
     public interface IDataContext : IDisposable
     {

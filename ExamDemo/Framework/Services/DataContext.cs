@@ -1,15 +1,11 @@
-﻿using ExamDemo.DataContext;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Entity;
+﻿using System;
 using System.Threading.Tasks;
 using System.Threading;
 using ExamDemo.Framework.Infrastructure;
-using ExamDemo.Framework.Services;
+using System.Data.Entity;
+using ExamDemo.Framework.DataContext;
 
-namespace ExamDemo.Repository
+namespace ExamDemo.Framework.Services
 {
     public class DataContext : DbContext, IDataContextAsync
     {
@@ -17,12 +13,12 @@ namespace ExamDemo.Repository
         private readonly Guid _instanceId;
 
         #endregion Private Fields
-        //public DataContext(string nameOrConnectionString) : base(nameOrConnectionString)
-        //{
-        //    _instanceId = Guid.NewGuid();
-        //    Configuration.LazyLoadingEnabled = false;
-        //    Configuration.ProxyCreationEnabled = false;
-        //}
+        public DataContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+            _instanceId = Guid.NewGuid();
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
+        }
 
         public Guid InstanceId => _instanceId;
 
@@ -68,6 +64,6 @@ namespace ExamDemo.Repository
                 ((IObjectState)dbEntityEntry.Entity).ObjectState = StateHelper.ConvertState(dbEntityEntry.State);
             }
         }
-    
-}
+
+    }
 }

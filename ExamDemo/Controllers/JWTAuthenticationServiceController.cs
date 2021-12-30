@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ExamDemo.Model;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Collections.Generic;
-using ExamDemo.Contracts;
+using ExamDemo.BusinessEntities.Contracts;
+using ExamDemo.BusinessEntities.Models;
 
 namespace ExamDemo.Controllers
 {
