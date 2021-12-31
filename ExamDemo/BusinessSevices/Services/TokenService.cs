@@ -1,11 +1,12 @@
 ﻿using ExamDemo.BusinessEntities.Contracts;
 using ExamDemo.BusinessEntities.Models;
 using ExamDemo.Database.Contracts;
+using ExamDemo.Database.Models;
 using System;
 
 namespace ExamDemo.BusinessSevices.Services
 {
-    public class TokenService : IToken
+    public class TokenService : ITokenService
     {
         private readonly ITokenDataService _tokenDataService;
 
@@ -13,16 +14,20 @@ namespace ExamDemo.BusinessSevices.Services
         {
             _tokenDataService = tokenDataService;
         }
-        public Users CreateToken(Users users)
+        public Response CreateToken(string authorizeUserName, string authorizePassword)
         {
             try
             {
-                //var TokenData = _tokenDataService.CreateToken(users);
-                //if (TokenData == null)
-                //{
-                //    return null;
-                //}
-                return users;
+                 var result = _tokenDataService.CreateToken(authorizeUserName,  authorizePassword);
+                if(result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return new Response { Status = "Success", Content = "Success" };
+                }
+
             }
             catch(Exception ex)
             {

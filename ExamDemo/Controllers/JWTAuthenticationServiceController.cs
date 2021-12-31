@@ -15,22 +15,22 @@ namespace ExamDemo.Controllers
     public class JWTAuthenticationServiceController : ControllerBase
     {
 
-        private readonly IToken _token;
+        private readonly ITokenService _tokenService;
 
-        public JWTAuthenticationServiceController(IToken token)
+        public JWTAuthenticationServiceController(ITokenService tokenService)
         {
-            _token = token;
+            _tokenService = tokenService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("Token")]
-        public IActionResult Token([FromBody] Users users)
+        public ActionResult Token(string authorizeUserName, string authorizePassword)
         {
-            var GetToken = _token.CreateToken(users);
+            var GetToken = _tokenService.CreateToken(authorizeUserName, authorizePassword);
 
             if (GetToken != null)
             {
-                var tokenString = GenerateToken(GetToken);
+                var tokenString = GenerateToken(authorizeUserName, authorizePassword);
                 return Ok(new { token = tokenString });
             }
             else
@@ -40,14 +40,15 @@ namespace ExamDemo.Controllers
         }
 
 
-        private string GenerateToken(Users users)
+        private string GenerateToken(string authorizeUserName, string authorizePassword)
         {
             //var SecretKey = Encoding.ASCII.GetBytes
             //    ("Do not share this key");
 
             var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, users.Email),
+                    new Claim(ClaimTypes.Name,authorizeUserName),
+                    new Claim(ClaimTypes.Authentication, authorizePassword)
                 };
 
             var JWTToken = new JwtSecurityToken(
