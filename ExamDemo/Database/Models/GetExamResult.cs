@@ -1,12 +1,16 @@
 ﻿using ExamDemo.Framework.Infrastructure;
 using System;
-
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ExamDemo.Database.Models
 {
-    public class ExamResult : BaseEntity
+    public class GetExamResult : BaseEntity
     {
-        public Guid UniqueName { get; set; }
+        [Display(Name ="ExamUniqueName")]
+       public Guid UniqueName { get; set; }
         public string ExamName { get; set; }
         public bool IsActive { get; set; }
         public int PassMark { get; set; }
