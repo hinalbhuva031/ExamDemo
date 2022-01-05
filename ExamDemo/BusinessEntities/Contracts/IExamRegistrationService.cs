@@ -1,14 +1,21 @@
-﻿using System;
+﻿using ExamDemo.BusinessEntities.Models;
+using ExamDemo.Database.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Swashbuckle.Swagger;
+
 
 namespace ExamDemo.BusinessEntities.Contracts
 
 {
     public interface IExamRegistrationService
     {
-        Response CreateExamRegistration();
+         Response UserExamRegistration(ExamRegistration examRegistration);
+
+        Response InsertUserData(string userEmail);
+
+        Response GetExamRegistrationbyUser(string userEmail);
+
     }
 }
