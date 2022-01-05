@@ -7,6 +7,9 @@ namespace ExamDemo.BusinessEntities.Models
 {
     public class ExamRegistration
     {
+        public Guid ExamUniqueName { get; set; }
+
+        public string UserEmail { get; set; }   
 
     }
 }
