@@ -11,7 +11,7 @@ namespace ExamDemo.BusinessSevices.Services
     {
 
         private readonly IExamDataService _examDataService;
-     
+
         public ExamService(IExamDataService insertExamDataService)
         {
             _examDataService = insertExamDataService;
@@ -27,26 +27,37 @@ namespace ExamDemo.BusinessSevices.Services
                 _examDataService.InsertExams(exams);
                 return new Response { Status = "Success", Content = "Success" };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw (ex);
             }
         }
-    
 
-        public Response GetExam(Guid examUniqueName)
+
+        public Exams GetExam(Guid examUniqueName)
         {
             try
             {
-               var response= _examDataService.GetExam(examUniqueName);
-                return new Response { Status = "Success", Content = response };
+                var examResult = _examDataService.GetExam(examUniqueName);
+                var result = GetExam<Exams>(examUniqueName, examResult);
+                return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw (ex);
             }
         }
+        public static T GetExam<T>(Guid examUniqueName, GetExamResult examResult) where T :Exams
+            {
+            var exam = Activator.CreateInstance<T>();
+           // exam.ExamUniqueName = examUniqueName;
+            exam.ExamName = examResult.ExamName;
+            exam.PassMark = examResult.PassMark;
+            exam.TotalMark = examResult.TotalMark;
+            exam.totalQuestions = examResult.totalQuestions;
+            return exam;
 
+        }
        
         public  List<Exams> GetExams()
         {
@@ -74,9 +85,8 @@ namespace ExamDemo.BusinessSevices.Services
             foreach (var examResult in examsResults)
             {
                 var exam = new Exams();
-                exam.ExamUniqueName = examResult.UniqueName;
-                exam.ExamName = examResult.ExamName;
-                exam.IsActive = examResult.IsActive;
+                //exam.ExamUniqueName = examResult.UniqueName;
+                exam.ExamName = examResult.ExamName;               
                 exam.PassMark = examResult.PassMark;
                 exam.TotalMark = examResult.TotalMark;
                 exam.totalQuestions = examResult.totalQuestions;
@@ -87,7 +97,52 @@ namespace ExamDemo.BusinessSevices.Services
 
         public ExamInstanceResponse CreateExamInstance(Guid examUniqueName)
         {
-            return examUniqueName;
+            try
+            {
+                var examresult = _examDataService.GetExam(examUniqueName);
+                var exam = GetExam(examUniqueName);
+               
+                var response = CreateInstance(exam, examUniqueName);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+
         }
+        private ExamInstanceResponse CreateInstance(Exams exam, Guid examUniqueName)
+        {
+            var examInstance = GetInsertInstance(exam, _examDataService);
+           examInstance.ExamRegistrationUniqueName = examUniqueName;
+            _examDataService.InsertInstance(examInstance);
+            //return new ExamInstanceResponse
+            //{
+            //    ExamInstanceUniqueName = examInstance.UniqueName,
+            //    ExamRegistrationUniqueName= examInstance.ExamRegistrationUniqueName,
+            //    TotalMark = examInstance.TotalMark,
+            //    PassMark = examInstance.PassMark,
+                
+            //    //UserPersantage = examInstance.UserPersantage
+            //};
+
+        }
+        public static InsertExamInstanceParams GetInsertInstance(Exams exam, IExamDataService examDataService)
+        {
+           // var examRegistrationResult = examDataService.GetExamREgistration(examRegistration.ExamUniqueName);
+            var examInstance = new InsertExamInstanceParams
+            {
+                //UniqueName = Guid.NewGuid(),
+                //ExamRegistrationUniqueName = examResult.,
+                //TotalMark = examResult.TotalMark,
+                //PassMark = examResult.PassMark,
+                
+            };
+            return examInstance;
+        }
+
+
+
     }
 }

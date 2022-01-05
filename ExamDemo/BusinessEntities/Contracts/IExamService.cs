@@ -9,7 +9,7 @@ namespace ExamDemo.BusinessEntities.Contracts
     {
         
         Response AddExam(Exams exams);
-        Response GetExam(Guid examUniqueName);
+        Exams GetExam(Guid examUniqueName);
         List<Exams> GetExams();
         ExamInstanceResponse CreateExamInstance(Guid examUniqueName);
 
