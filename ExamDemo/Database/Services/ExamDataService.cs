@@ -13,15 +13,18 @@ namespace ExamDemo.Database.Services
         private readonly IRepositoryAsync<ExamResult> _repositoryservice;
         private readonly IRepositoryAsync<GetExamResult> _examRepository;
         private readonly IRepositoryAsync<GetExamsResult> _examsRepository;
+        private readonly IRepositoryAsync<InstanceExamResult> _instanceExamRepository;
         public ExamDataService(IRepositoryAsync<ExamResult> repositoryservice, IRepositoryAsync<GetExamResult> examRepository,
-          IRepositoryAsync<GetExamsResult> examsRepository)
+          IRepositoryAsync<GetExamsResult> examsRepository, IRepositoryAsync<InstanceExamResult> instanceExamRepository)
         {
             _repositoryservice = repositoryservice;
             _examRepository = examRepository;
             _examsRepository = examsRepository;
-            
+            _instanceExamRepository = instanceExamRepository;
+
+
     }
-        public void InsertExams(Exams exam)
+        public void InsertExams(InsertExam exam)
         {
             InsertExamParam isertExamParam = new InsertExamParam() { 
             ExamName = exam.ExamName,
@@ -43,5 +46,21 @@ namespace ExamDemo.Database.Services
         {
             return _examsRepository.ExecuteStoredProcedure(StoredProcedures.GET_EXAMS);
         }
+
+        public void InserExamInstance(ExamInstance examInstance)
+        {
+            InsertExamInstanceParams insertExamInstanceParams = new InsertExamInstanceParams()
+            {
+                ExamRegistrationUniqueName = examInstance.ExamRegistrationUniqueName,
+                TotalMark = examInstance.TotalMark,
+                PassMark = examInstance.PassMark
+               
+            };
+          
+            _instanceExamRepository.ExecuteStoredProcedure(StoredProcedures.INSERT_EXAM_INSTANCES, insertExamInstanceParams);
+
+        }
+
+      
     }
 }

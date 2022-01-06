@@ -48,12 +48,12 @@ namespace ExamDemo.Controllers
             var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name,authorizeUserName),
-                    new Claim(ClaimTypes.Authentication, authorizePassword)
+                    //new Claim(ClaimTypes.Authentication, authorizePassword)
                 };
 
             var JWTToken = new JwtSecurityToken(
-                issuer: "http://localhost:60064/",
-                audience: "http://localhost:60064/",
+                issuer: "https://localhost:44302/",
+                audience: "https://localhost:44302/",
                 claims: authClaims,
                 notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                 expires: new DateTimeOffset(DateTime.Now.AddHours(1)).DateTime,

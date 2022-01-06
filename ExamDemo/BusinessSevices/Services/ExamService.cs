@@ -4,23 +4,21 @@ using ExamDemo.Database.Contracts;
 using ExamDemo.Database.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExamDemo.BusinessSevices.Services
 {
     public class ExamService : IExamService
     {
-
         private readonly IExamDataService _examDataService;
-
-        public ExamService(IExamDataService insertExamDataService)
+        private readonly IExamInstanceDataService _examInstanceDataService;
+        public ExamService(IExamDataService insertExamDataService, IExamInstanceDataService examInstanceDataService)
         {
             _examDataService = insertExamDataService;
+            _examInstanceDataService = examInstanceDataService;
         }
-        //public ExamService()
-        //{
-        //    _insertExamDataService = insertExamDataService;
-        //}
-        public Response AddExam(Exams exams)
+        
+        public Response AddExam(InsertExam exams)
         {
             try
             {
@@ -50,7 +48,7 @@ namespace ExamDemo.BusinessSevices.Services
         public static T GetExam<T>(Guid examUniqueName, GetExamResult examResult) where T :Exams
             {
             var exam = Activator.CreateInstance<T>();
-           // exam.ExamUniqueName = examUniqueName;
+           exam.ExamUniqueName = examUniqueName;
             exam.ExamName = examResult.ExamName;
             exam.PassMark = examResult.PassMark;
             exam.TotalMark = examResult.TotalMark;
@@ -85,7 +83,7 @@ namespace ExamDemo.BusinessSevices.Services
             foreach (var examResult in examsResults)
             {
                 var exam = new Exams();
-                //exam.ExamUniqueName = examResult.UniqueName;
+                exam.ExamUniqueName = examResult.UniqueName;
                 exam.ExamName = examResult.ExamName;               
                 exam.PassMark = examResult.PassMark;
                 exam.TotalMark = examResult.TotalMark;
@@ -95,54 +93,23 @@ namespace ExamDemo.BusinessSevices.Services
             return exams;
         }
 
-        public ExamInstanceResponse CreateExamInstance(Guid examUniqueName)
+        public Response CreateExamInstance(ExamInstance examInstance)
         {
-            try
-            {
-                var examresult = _examDataService.GetExam(examUniqueName);
-                var exam = GetExam(examUniqueName);
-               
-                var response = CreateInstance(exam, examUniqueName);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw (ex);
-            }
-
-
-        }
-        private ExamInstanceResponse CreateInstance(Exams exam, Guid examUniqueName)
-        {
-            var examInstance = GetInsertInstance(exam, _examDataService);
-           examInstance.ExamRegistrationUniqueName = examUniqueName;
-            _examDataService.InsertInstance(examInstance);
-            //return new ExamInstanceResponse
-            //{
-            //    ExamInstanceUniqueName = examInstance.UniqueName,
-            //    ExamRegistrationUniqueName= examInstance.ExamRegistrationUniqueName,
-            //    TotalMark = examInstance.TotalMark,
-            //    PassMark = examInstance.PassMark,
-                
-            //    //UserPersantage = examInstance.UserPersantage
-            //};
-
-        }
-        public static InsertExamInstanceParams GetInsertInstance(Exams exam, IExamDataService examDataService)
-        {
-           // var examRegistrationResult = examDataService.GetExamREgistration(examRegistration.ExamUniqueName);
-            var examInstance = new InsertExamInstanceParams
-            {
-                //UniqueName = Guid.NewGuid(),
-                //ExamRegistrationUniqueName = examResult.,
-                //TotalMark = examResult.TotalMark,
-                //PassMark = examResult.PassMark,
-                
-            };
-            return examInstance;
+            _examDataService.InserExamInstance(examInstance);
+            return   new Response { Status = "Success", Content = "Success" };
         }
 
-
-
+        public GetExamInstanceResult GetExamInstance(Guid examInstanceUniqueName)
+        {
+            var examInstanceResult = _examInstanceDataService.GetExamInstance(examInstanceUniqueName);
+          //  var Instance = GetExamInstance<GetExamInstanceResult>(examInstanceUniqueName, examInstanceResult);
+            return examInstanceResult;
+        }
+        public Response EndExam (Guid examInstanceUniqueName,int userMark)
+        {
+             _examInstanceDataService.EndExam(examInstanceUniqueName, userMark);
+            return new Response { Status = "Success", Content = "Success" };
+        }
     }
 }
+ 
