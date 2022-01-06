@@ -8,10 +8,13 @@ namespace ExamDemo.BusinessEntities.Contracts
     public interface IExamService
     {
         
-        Response AddExam(Exams exams);
-        Response GetExam(Guid examUniqueName);
+        Response AddExam(InsertExam exams);
+        Exams GetExam(Guid examUniqueName);
         List<Exams> GetExams();
-        ExamInstanceResponse CreateExamInstance(Guid examUniqueName);
+        Response CreateExamInstance(ExamInstance examInstance);
+        // Response CreateExamInstance(Guid examUniqueName);
+        GetExamInstanceResult GetExamInstance(Guid examInstanceUniqueName);
 
+        Response EndExam(Guid examInstanceUniqueName, int userMark);
     }
 }

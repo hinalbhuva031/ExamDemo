@@ -7,11 +7,13 @@ namespace ExamDemo.Database.Contracts
 {
     public interface IExamDataService
     {
-        void InsertExams(Exams exam);
+        void InsertExams(InsertExam exam);
 
         GetExamResult GetExam(Guid examUniqueName);
 
        List<GetExamsResult> GetExams();
-         
+
+        void InserExamInstance(ExamInstance examInstance);
+        //InstanceExamResult InsertInstance(examInstance);
     }
 }

@@ -1,10 +1,13 @@
 ﻿using ExamDemo.BusinessEntities.Contracts;
 using ExamDemo.BusinessEntities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
+
 namespace ExamDemo.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class ExamController : ControllerBase
@@ -14,9 +17,11 @@ namespace ExamDemo.Controllers
         {
             _examService = examservice;
         }
+
+       // [Authorize]
         [HttpPost]
         [Route("InsertExam")]
-        public ActionResult InsertExam([FromBody] Exams exams)
+        public ActionResult InsertExam([FromBody] InsertExam exams)
         {
             var result = _examService.AddExam(exams);
             return new JsonResult(result);
@@ -29,21 +34,40 @@ namespace ExamDemo.Controllers
             var result = _examService.GetExam(examUniqueName);
             return new JsonResult(result);
         }
-
+ 
         [HttpGet]
+        [Authorize]
         [Route("GetExams")]
         public ActionResult GetExams()
         {
             var exams = _examService.GetExams();
             return new JsonResult(exams);
         }
-
+       // [Authorize]
         [HttpPost]
-        [Route("{examUniqueName}/examInstances")]
-        public ActionResult CreateExamInstance(Guid examUniqueName)
+        [Route("CreateExamInstance")]
+        public ActionResult CreateExamInstance(ExamInstance examInstance)
         {
-            var exam = _examService.CreateExamInstance(examUniqueName);
+            var exam = _examService.CreateExamInstance(examInstance);
             return new JsonResult(exam);
+        }
+       // [Authorize]
+        [HttpGet]
+        [Route("GetExamInstance/{examInstanceUniqueName}")]
+
+        public ActionResult GetExamInstance(Guid examInstanceUniqueName)
+        {
+            var examInstance = _examService.GetExamInstance(examInstanceUniqueName);
+            return new JsonResult(examInstance);
+        }
+
+        //[Authorize]
+        [HttpPatch]
+        [Route("EndExam")]
+        public ActionResult EndExam(Guid examInstanceUniqueName,int userMark)
+        {
+            var endExam = _examService.EndExam(examInstanceUniqueName, userMark);
+            return new JsonResult(endExam);
         }
     }
 }
