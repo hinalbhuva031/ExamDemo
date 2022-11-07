@@ -48,7 +48,7 @@ namespace ExamDemo.Controllers
             var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name,authorizeUserName),
-                    //new Claim(ClaimTypes.Authentication, authorizePassword)
+                    new Claim(ClaimTypes.Authentication, authorizePassword)
                 };
 
             var JWTToken = new JwtSecurityToken(
