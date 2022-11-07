@@ -2,26 +2,30 @@
 using ExamDemo.BusinessEntities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using System;
-
+using System.Threading.Tasks;
 
 namespace ExamDemo.Controllers
 {
-   
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ExamController : ControllerBase
     {
         private readonly IExamService _examService;
-        public ExamController(IExamService examservice)
+        private readonly IDistributedCache _distributedCache;
+
+        public ExamController(IExamService examservice, IDistributedCache distributedCache)
         {
             _examService = examservice;
+            _distributedCache = distributedCache;
         }
 
-       // [Authorize]
         [HttpPost]
         [Route("InsertExam")]
-        public ActionResult InsertExam([FromBody] InsertExam exams)
+        public ActionResult InsertExam(InsertExam exams)
         {
             var result = _examService.AddExam(exams);
             return new JsonResult(result);
@@ -36,14 +40,17 @@ namespace ExamDemo.Controllers
         }
  
         [HttpGet]
-        [Authorize]
         [Route("GetExams")]
         public ActionResult GetExams()
         {
             var exams = _examService.GetExams();
+
+            var data = JsonConvert.SerializeObject(exams);
+            //await _distributedCache.SetStringAsync("DemoData", data);
+
             return new JsonResult(exams);
         }
-       // [Authorize]
+
         [HttpPost]
         [Route("CreateExamInstance")]
         public ActionResult CreateExamInstance(ExamInstance examInstance)
@@ -51,7 +58,7 @@ namespace ExamDemo.Controllers
             var exam = _examService.CreateExamInstance(examInstance);
             return new JsonResult(exam);
         }
-       // [Authorize]
+
         [HttpGet]
         [Route("GetExamInstance/{examInstanceUniqueName}")]
 
@@ -61,7 +68,6 @@ namespace ExamDemo.Controllers
             return new JsonResult(examInstance);
         }
 
-        //[Authorize]
         [HttpPatch]
         [Route("EndExam")]
         public ActionResult EndExam(Guid examInstanceUniqueName,int userMark)

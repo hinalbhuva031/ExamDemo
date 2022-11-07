@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 
@@ -38,12 +39,32 @@ namespace ExamDemo
             services.AddScoped<IDataContextAsync>(_ => new AppDbContext(_configuration.GetConnectionString("ExamDBConnection")));
             services.AddScoped<IRepositoryAsync<ExamResult>, Repository<ExamResult>>();
             services.AddScoped<IRepositoryAsync<GetUserResult>, Repository<GetUserResult>>();
-            services.AddScoped<IExamDataService, ExamDataService>();
-            services.AddScoped<IExamService, ExamService>();
-            services.AddScoped<ITokenDataService, TokenDataService>();
-            
+            services.AddScoped<IRepositoryAsync<GetExamResult>, Repository<GetExamResult>>();
+            services.AddScoped<IRepositoryAsync<GetExamsResult>, Repository<GetExamsResult>>();
+            services.AddScoped<IRepositoryAsync<GetAuthorizeResult>, Repository<GetAuthorizeResult>>();
+            services.AddScoped<IRepositoryAsync<InstanceExamResult>, Repository<InstanceExamResult>>();
+            services.AddScoped<IRepositoryAsync<GetExamInstanceResult>, Repository<GetExamInstanceResult>>();
+            services.AddScoped<IRepositoryAsync<GetExamRegistrationbyUserResult>, Repository<GetExamRegistrationbyUserResult>>();
+            services.AddScoped<IRepositoryAsync<NoOutputResult>, Repository<NoOutputResult>>();
+            services.AddScoped<IRepositoryAsync<InsertUserResult>, Repository<InsertUserResult>>();
+            services.AddScoped<IRepositoryAsync<GetUserResult>, Repository<GetUserResult>>();
 
+            services.AddScoped<IExamDataService, ExamDataService>();
+            services.AddScoped<ITokenDataService, TokenDataService>();
+            services.AddScoped<IExamRegistrationDataService, ExamRegistrationDataService>();
+            services.AddScoped<IExamInstanceDataService, ExamInstanceDataService>();
+
+            services.AddScoped<IExamService, ExamService>();
+            services.AddScoped<IExamRegistrationService, ExamRegistrationService>();
+            services.AddScoped<ITokenService, TokenService>();
+
+            services.AddCors();
             services.AddMemoryCache();
+            services.AddStackExchangeRedisCache(option =>
+            {
+                option.Configuration = "localhost:6379";
+                option.InstanceName = "RadisDemo";
+            });
 
             services.AddAuthentication(a =>
             {
@@ -68,6 +89,10 @@ namespace ExamDemo
                 };
             });
             services.AddControllers(options => options.EnableEndpointRouting = false);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "ExamDemo", Version = "1.0" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,10 +102,26 @@ namespace ExamDemo
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "ExamDemo (V 1.0)");
+            });
+
+
+            app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -90,7 +131,7 @@ namespace ExamDemo
             });
             app.UseMvc(routes =>
             {
-              
+
                 routes.MapRoute(
                     name: "defaultApi",
                     template: "{controller}/{action=}/{id?}");
